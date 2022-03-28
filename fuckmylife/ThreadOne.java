@@ -24,7 +24,7 @@ public class ThreadOne extends Thread {
 	private static final String huh = " ";
 	public static boolean iscalled;
 	public boolean fuckmylife;
-
+	static int i = 0;
 	public void run() {
 		startGet();
 	}
@@ -62,13 +62,13 @@ public class ThreadOne extends Thread {
 		    BufferedImage AaaaAaAA = AWTUtil.toBufferedImage(AaaAAaAaAaAAA);
 		    AaAAAaAA(AaaaAaAA);
 		    if(Main.AAAAA.size() % AaaaAaAA.getHeight() == 0) {
-	    		String aa = "";
+	    		StringBuilder aa = new StringBuilder();
 		    	for(int a = 0; a < AaaaAaAA.getHeight(); a++) {
-		    		aa += "\r\n" + Main.AAAAA.get(0);
+		    		aa.append("\r\n" + Main.AAAAA.get(0));
 		    		Main.AAAAA.remove(0);
 		    	}
-	    		Main.packshitinhere.add(aa);
-	    		aa = "";
+	    		Main.packshitinhere.add(aa.toString());
+	    		aa.setLength(0);
 		    }
 		}
 		Main.AAAAA.clear();
@@ -76,12 +76,12 @@ public class ThreadOne extends Thread {
 		
 		Thread.sleep(5000L);
 		//create window
-		FrameThatFuckMyLife fuckmylife = new FrameThatFuckMyLife(0, 0, 1000, 800);
+		FrameThatFuckMyLife fuckmylife = new FrameThatFuckMyLife(0, 0, 115*5, 144*5);
 	}
 	
 	//Run through every pixel to say if that is an white or black and put in array
 	private static void AaAAAaAA(BufferedImage aaa) {
-		String s = "";
+		StringBuilder builder = new StringBuilder();
 		for(int a = 0; a < aaa.getHeight(); ++a) {
 			for(int aa = 0; aa < aaa.getWidth(); aa++) {
 				int rgb = aaa.getRGB(aa, a);
@@ -89,17 +89,20 @@ public class ThreadOne extends Thread {
 				int red = color.getRed();
 				int blue = color.getBlue();
 				int green = color.getGreen();
-				if(red == 255 && blue == 255 && green == 255) 
-					s += black;
-				else if(red == 0 && blue == 0 && green == 0)
-					s += white;
-				else
-					s += huh;
-				if(s.length() == aaa.getWidth()) {
-					Main.AAAAA.add(s);
-					s = "";
+				float luminance = (red * 0.2126f + green * 0.7152f + blue * 0.0722f) / 255;
+				if (luminance >= 0.5f) {
+					builder.append(black);
+				} else {
+					builder.append(white);
+				}
+
+				if(builder.length() == aaa.getWidth()) {
+					Main.AAAAA.add(builder.toString());
+					builder.setLength(0);
 				}
 			}
 		}
+		i++;
+		System.out.println(i);
 	}
 }
